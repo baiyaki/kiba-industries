@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>KIBA Industries</title>
+  <meta name="description" content="KIBA Industries is a small software company. We make SettlyWay and Kuyoki.">
+  
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="brand/png/kiba-app-icon-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:#0a0b0e;
+      --sf:#111318;
+      --cd:#13151b;
+      --bd:rgba(255,255,255,0.055);
+      --bh:rgba(92,225,230,0.18);
+      --ac:#5ce1e6;
+      --ad:#3a9ea2;
+      --wh:#e6e6e6;
+      --gr:#7a8089;
+      --dm:#3e4349;
+      --sans:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+      --mono:'JetBrains Mono',monospace;
+    }
+    
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+    /* CUSTOM SLEEK SCROLLBAR (MATCHES SITE) */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1c2028;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #2a313d;
+    }
+    ::-webkit-scrollbar-thumb:active {
+      background: var(--ad);
+    }
+
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    html {
+      width:100%;
+      max-width:100vw;
+      overflow-x:hidden;
+      background:var(--bg);
+      color:var(--wh);
+      font-family:var(--sans);
+      -webkit-font-smoothing:antialiased;
+      -webkit-text-size-adjust:100%;
+      scrollbar-width: thin;
+      scrollbar-color: #1c2028 var(--bg);
+    }
+
+    body {
+      width:100%;
+      max-width:100vw;
+      min-height:100vh;
+      line-height:1.5;
+      overflow-x:hidden;
+      background:var(--bg);
+    }
+
+    body::before {
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      background-image:radial-gradient(rgba(255,255,255,0.018) 1px,transparent 1px);
+      background-size:40px 40px;
+    }
+
+    .orb {
+      position:fixed;
+      width:450px;
+      height:450px;
+      border-radius:50%;
+      background:radial-gradient(circle,rgba(92,225,230,0.045),transparent 70%);
+      pointer-events:none;
+      z-index:1;
+      transform:translate(-50%,-50%);
+      transition:left .7s cubic-bezier(.16,1,.3,1),top .7s cubic-bezier(.16,1,.3,1);
+      filter:blur(30px);
+      will-change:left,top;
+    }
+
+    .rv {
+      opacity:0;
+      transform:translateY(32px);
+      transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);
+    }
+    .rv.v { opacity:1; transform:translateY(0); }
+    .d1 { transition-delay:.1s; }
+    .d2 { transition-delay:.18s; }
+    .d3 { transition-delay:.26s; }
+
+    .w {
+      width:100%;
+      max-width:1060px;
+      margin:0 auto;
+      padding:0 20px;
+      position:relative;
+      z-index:2;
+    }
+
+    /* NAV */
+    header {
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:100;
+      backdrop-filter:blur(20px) saturate(1.3);
+      -webkit-backdrop-filter:blur(20px) saturate(1.3);
+      background:rgba(10,11,14,.75);
+      border-bottom:1px solid var(--bd);
+    }
+    .nav {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      height:54px;
+      gap:12px;
+    }
+    .logo {
+      display:flex;
+      align-items:center;
+      gap:9px;
+      text-decoration:none;
+      color:var(--wh);
+      flex-shrink:0;
+    }
+    .logo-svg { height:20px; width:auto; display:block; color:var(--wh); }
+    .logo-k {
+      width:24px;
+      height:24px;
+      border-radius:5px;
+      background:linear-gradient(135deg,var(--ac),#17555a);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      font-size:12px;
+      color:var(--bg);
+    }
+    .logo-t {
+      font-weight:800;
+      font-size:14px;
+      letter-spacing:-.03em;
+    }
+    .nr {
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+    .nr a {
+      text-decoration:none;
+      color:var(--dm);
+      font-size:12px;
+      font-weight:600;
+      transition:color .2s;
+    }
+    .nr a:hover { color:var(--gr); }
+    .bo {
+      color:var(--gr);
+      padding:4px 12px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:6px;
+      font-size:11px;
+      font-weight:600;
+      text-decoration:none;
+      transition:all .2s;
+      background:0 0;
+    }
+    .bo:hover {
+      color:var(--wh);
+      border-color:rgba(255,255,255,.18);
+    }
+
+    /* HERO */
+    .hero {
+      padding:150px 0 90px;
+      position:relative;
+    }
+    .hero-intro {
+      font-size:12px;
+      color:var(--ad);
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      margin-bottom:18px;
+    }
+    .hero h1 {
+      font-size:clamp(36px,7vw,64px);
+      font-weight:800;
+      line-height:1.02;
+      letter-spacing:-.05em;
+      margin-bottom:28px;
+    }
+    .hero-sub {
+      font-size:clamp(14px,1.6vw,16px);
+      color:var(--gr);
+      max-width:560px;
+      line-height:1.6;
+      margin-bottom:28px;
+    }
+    .hero-products {
+      display:flex;
+      gap:20px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .hero-products a {
+      font-size:13px;
+      color:var(--gr);
+      text-decoration:none;
+      font-weight:600;
+      transition:color .2s;
+      display:flex;
+      align-items:center;
+      gap:5px;
+    }
+    .hero-products a:hover { color:var(--wh); }
+    .hero-products a .arrow {
+      color:var(--ad);
+      font-size:11px;
+    }
+
+    /* SHARED */
+    .sec {
+      padding:84px 0;
+    }
+    .sec-label {
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      color:var(--ad);
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .p-row {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:48px;
+      align-items:center;
+    }
+    .p-text h2 {
+      font-size:clamp(24px,3.5vw,36px);
+      font-weight:800;
+      letter-spacing:-.035em;
+      line-height:1.1;
+      margin-bottom:14px;
+    }
+    .p-text p {
+      font-size:14px;
+      color:var(--gr);
+      line-height:1.6;
+      margin-bottom:12px;
+    }
+    .p-link {
+      font-size:13px;
+      color:var(--gr);
+      text-decoration:none;
+      font-weight:600;
+      transition:color .2s;
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      margin-top:8px;
+    }
+    .p-link:hover { color:var(--ac); }
+
+    /* SETTLY VISUAL */
+    .map-vis {
+      background:var(--cd);
+      border:1px solid var(--bd);
+      border-radius:14px;
+      padding:28px;
+      position:relative;
+      overflow:hidden;
+      min-height:340px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    }
+    .map-grid {
+      position:absolute;
+      inset:0;
+      background-image:linear-gradient(var(--bd) 1px,transparent 1px),
+        linear-gradient(90deg,var(--bd) 1px,transparent 1px);
+      background-size:48px 48px;
+      opacity:.5;
+    }
+    .pin {
+      position:absolute;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      z-index:2;
+    }
+    .pin-dot {
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      border:2px solid var(--ac);
+      background:rgba(92,225,230,.2);
+      box-shadow:0 0 10px rgba(92,225,230,.3);
+    }
+    .pin-dot.dim {
+      border-color:var(--dm);
+      background:rgba(255,255,255,.05);
+      box-shadow:none;
+    }
+    .pin-label {
+      font-family:var(--mono);
+      font-size:9px;
+      color:var(--dm);
+      margin-top:4px;
+      white-space:nowrap;
+    }
+    .commute-badge {
+      position:absolute;
+      z-index:3;
+      background:var(--ac);
+      color:var(--bg);
+      font-family:var(--mono);
+      font-size:11px;
+      font-weight:700;
+      padding:4px 10px;
+      border-radius:6px;
+      white-space:nowrap;
+      box-shadow:0 4px 12px rgba(92,225,230,.25);
+    }
+    .commute-line {
+      position:absolute;
+      z-index:1;
+      border-top:1px dashed rgba(92,225,230,.3);
+    }
+    .nearby-tag {
+      position:absolute;
+      z-index:2;
+      font-size:10px;
+      color:var(--gr);
+      font-weight:600;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--bd);
+      padding:2px 8px;
+      border-radius:4px;
+      white-space:nowrap;
+    }
+
+    /* KUYOKI VISUAL */
+    .event-vis {
+      background:var(--cd);
+      border:1px solid var(--bd);
+      border-radius:14px;
+      padding:20px;
+      position:relative;
+      overflow:hidden;
+      min-height:340px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    }
+    .ev-card {
+      background:rgba(255,255,255,.025);
+      border:1px solid var(--bd);
+      border-radius:10px;
+      padding:14px;
+      transition:border-color .3s;
+    }
+    .ev-card:hover { border-color:rgba(255,255,255,.1); }
+    .ev-top {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:6px;
+    }
+    .ev-type {
+      font-size:10px;
+      font-weight:600;
+      color:var(--ad);
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+    .ev-time {
+      font-family:var(--mono);
+      font-size:11px;
+      color:var(--ac);
+      font-weight:600;
+    }
+    .ev-title {
+      font-size:14.5px;
+      font-weight:700;
+      margin-bottom:3px;
+    }
+    .ev-loc {
+      font-size:12px;
+      color:var(--dm);
+      display:flex;
+      align-items:center;
+      gap:4px;
+    }
+    .ev-loc svg { width:12px; height:12px; }
+    .ev-foot {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-top:8px;
+    }
+    .ev-going {
+      font-size:11px;
+      color:var(--gr);
+    }
+    .av-stack {
+      display:flex;
+      margin-left:auto;
+    }
+    .av {
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      border:2px solid var(--cd);
+      margin-left:-5px;
+      background:var(--dm);
+    }
+    .av:nth-child(1){background:#4a9ea2}
+    .av:nth-child(2){background:#6b7280}
+    .av:nth-child(3){background:#8b5cf6}
+
+    /* KATALY VISUAL (REFINED, BALANCED PROPORTIONS) */
+    .mover-vis {
+      background:var(--cd);
+      border:1px solid var(--bd);
+      border-radius:14px;
+      overflow:hidden;
+      box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    }
+    .mover-header {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 18px;
+      border-bottom:1px solid var(--bd);
+      background:rgba(255,255,255,0.015);
+    }
+    .mover-title-group {
+      display:flex;
+      align-items:baseline;
+      gap:8px;
+    }
+    .mover-header h4 {
+      font-size:12.5px;
+      font-weight:700;
+      letter-spacing:.02em;
+    }
+    .mover-sub {
+      font-size:10px;
+      color:var(--dm);
+      font-family:var(--mono);
+    }
+    .mover-live {
+      font-size:10px;
+      color:var(--ad);
+      font-weight:600;
+      display:flex;
+      align-items:center;
+      gap:5px;
+    }
+    .mover-live::before {
+      content:"";
+      width:5px;
+      height:5px;
+      border-radius:50%;
+      background:var(--ac);
+      box-shadow:0 0 6px rgba(92,225,230,.5);
+      animation:pd 2.5s ease-in-out infinite;
+    }
+    @keyframes pd {
+      0%,100%{opacity:1}
+      50%{opacity:.3}
+    }
+    
+    .mover-row {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 18px;
+      border-bottom:1px solid rgba(255,255,255,.025);
+      transition:background .2s;
+    }
+    .mover-row:hover { background:rgba(255,255,255,.015); }
+    .mover-left {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+      flex:1;
+    }
+    .mover-ticker {
+      font-family:var(--mono);
+      font-weight:700;
+      font-size:11.5px;
+      color:var(--wh);
+      background:rgba(255,255,255,.04);
+      padding:2px 6px;
+      border-radius:4px;
+      border:1px solid var(--bd);
+      flex-shrink:0;
+    }
+    .mover-reason {
+      color:var(--gr);
+      font-size:12px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .mover-pct {
+      font-family:var(--mono);
+      font-size:12px;
+      font-weight:700;
+      text-align:right;
+      flex-shrink:0;
+    }
+    .up { color:#34d399; }
+    .dn { color:#f87171; }
+
+    .filing-header {
+      padding:9px 18px;
+      background:rgba(255,255,255,0.01);
+      border-bottom:1px solid rgba(255,255,255,0.03);
+      font-size:10px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--ad);
+    }
+    .filing-row {
+      padding:10px 18px;
+      border-bottom:1px solid rgba(255,255,255,.02);
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .filing-badge {
+      font-size:9px;
+      font-weight:700;
+      color:var(--bg);
+      background:var(--ac);
+      padding:2px 6px;
+      border-radius:3px;
+      white-space:nowrap;
+      flex-shrink:0;
+    }
+    .filing-text {
+      font-size:12px;
+      color:var(--gr);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      flex:1;
+    }
+    .filing-score {
+      font-family:var(--mono);
+      font-size:11px;
+      color:var(--ac);
+      font-weight:700;
+      flex-shrink:0;
+    }
+
+    /* KIBA NEXT */
+    .next {
+      padding:88px 0;
+      text-align:center;
+    }
+    .next h2 {
+      font-size:clamp(22px,3.5vw,34px);
+      font-weight:800;
+      letter-spacing:-.035em;
+      margin-bottom:10px;
+    }
+    .next p {
+      font-size:14px;
+      color:var(--gr);
+      max-width:440px;
+      margin:0 auto;
+      line-height:1.6;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top:1px solid var(--bd);
+      padding:28px 0 22px;
+      background:rgba(10,11,14,.4);
+    }
+    .foot {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:12px;
+    }
+    .foot-left {
+      font-size:11px;
+      color:var(--dm);
+    }
+    .foot a {
+      color:var(--gr);
+      font-family:var(--mono);
+      font-size:12px;
+      text-decoration:none;
+      transition:color .2s;
+      word-break:break-all;
+    }
+    .foot a:hover { color:var(--ac); }
+
+    /* RESPONSIVE */
+    @media(max-width:860px){
+      .p-row {
+        grid-template-columns:1fr;
+        gap:28px;
+      }
+      .p-row.flip .p-text { order:-1; }
+      .p-row.flip-kataly .p-text { order:-1; }
+    }
+    @media(max-width:640px){
+      .w { padding:0 16px; }
+      .nr a:not(.bo) { display:none; }
+      .nav { height:48px; }
+      .hero { padding:100px 0 60px; }
+      .sec { padding:48px 0; }
+      .next { padding:48px 0; }
+      .map-vis,.event-vis,.mover-vis { min-height:260px; }
+      .orb { display:none; }
+      .foot {
+        flex-direction:column;
+        align-items:flex-start;
+        gap:8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<div class="orb" id="orb"></div>
+
+<header>
+  <div class="w"><div class="nav">
+    <a href="#" class="logo"><svg class="logo-svg" viewBox="0 0 522 100" role="img" aria-label="KIBA Industries"><g transform="translate(0.00 0.00) scale(0.17857)" fill="currentColor"><polygon points="125,0 275,0 0,270 0,125"/><polygon points="440,0 635,0 0,560 0,390"/><polygon points="300,325 390,248 655,510 470,510"/></g><path transform="translate(151.0 12.5)" fill="currentColor" stroke="currentColor" stroke-width="7" stroke-linejoin="miter" d="M9.375 75.0V0.0H18.75V32.8125H31.201171875L79.6875 0.0H93.75L40.625 36.71875L95.3125 75.0H81.25L31.25 40.625H18.75V75.0Z M111.8125 75.0V0.0H121.1875V75.0Z M143.9375 75.0V0.0H203.703125Q212.19921875 0.0 217.6435546875 1.5869140625Q223.087890625 3.173828125 225.7001953125 7.2021484375Q228.3125 11.23046875 228.3125 18.603515625Q228.3125 25.244140625 225.236328125 29.58984375Q222.16015625 33.935546875 215.8125 34.375Q224.11328125 35.205078125 227.775390625 40.3076171875Q231.4375 45.41015625 231.4375 53.125Q231.4375 59.814453125 229.8994140625 64.111328125Q228.361328125 68.408203125 224.748046875 70.7763671875Q221.134765625 73.14453125 214.9580078125 74.072265625Q208.78125 75.0 199.552734375 75.0ZM153.3125 31.25H197.013671875Q204.58203125 31.25 209.416015625 30.712890625Q214.25 30.17578125 216.59375 27.5390625Q218.9375 24.90234375 218.9375 18.603515625Q218.9375 13.671875 217.5458984375 11.376953125Q216.154296875 9.08203125 212.833984375 8.447265625Q209.513671875 7.8125 203.703125 7.8125H153.3125ZM153.3125 67.1875H199.552734375Q206.2421875 67.1875 210.6123046875 66.845703125Q214.982421875 66.50390625 217.4970703125 65.185546875Q220.01171875 63.8671875 221.037109375 61.0107421875Q222.0625 58.154296875 222.0625 53.125Q222.0625 47.94921875 220.1337890625 45.068359375Q218.205078125 42.1875 214.7626953125 40.91796875Q211.3203125 39.6484375 206.779296875 39.35546875Q202.23828125 39.0625 197.013671875 39.0625H153.3125Z"/><path transform="translate(151.0 12.5)" fill="currentColor" d="M239.19,78.50 L279.28,-3.50 L307.22,-3.50 L358.24,78.50 L338.80,78.50 L296.28,12.60 L258.62,78.50 Z M291.42,48.74 L318.45,48.74 L327.57,63.31 L284.14,63.31 Z"/></svg></a>
+    <div class="nr">
+      <a href="#settly">SettlyWay</a>
+      <a href="#kuyoki">Kuyoki</a>
+      <a href="#kataly">Kataly</a>
+      <a href="#kiba">KIBA</a>
+      <a href="mailto:kibaindustries@gmail.com" class="bo">Contact</a>
+    </div>
+  </div></div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="w">
+    <div class="hero-intro rv v">KIBA Industries</div>
+    <h1 class="rv v" style="transition-delay:.12s">We build apps and software.</h1>
+    <div class="hero-products rv v" style="transition-delay:.28s">
+      <a href="#settly">SettlyWay <span class="arrow">↓</span></a>
+      <a href="#kuyoki">Kuyoki <span class="arrow">↓</span></a>
+      <a href="#kataly">Kataly <span class="arrow">↓</span></a>
+      <a href="#kiba" style="color:var(--ad)">Project KIBA <span class="arrow">↓</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- SETTLY -->
+<section id="settly" class="sec">
+  <div class="w">
+    <div class="p-row">
+      <div class="map-vis rv">
+        <div class="map-grid"></div>
+        <div class="pin" style="top:35%;left:25%">
+          <div class="pin-dot dim"></div><div class="pin-label">Studio unit</div>
+        </div>
+        <div class="pin" style="top:55%;left:60%">
+          <div class="pin-dot dim"></div><div class="pin-label">Master room</div>
+        </div>
+        <div class="pin" style="top:28%;left:68%">
+          <div class="pin-dot"></div><div class="pin-label">Condo</div>
+        </div>
+        <div class="commute-badge" style="top:18%;left:52%">14 min to KLCC</div>
+        <div class="commute-line" style="top:33%;left:52%;width:80px;transform:rotate(20deg)"></div>
+        <div class="nearby-tag" style="bottom:22%;left:15%">LRT Ampang</div>
+        <div class="nearby-tag" style="bottom:12%;right:18%">Clinic · 400m</div>
+        <div class="nearby-tag" style="top:60%;left:12%">99 Speedmart</div>
+      </div>
+      <div class="p-text rv d1">
+        <div class="sec-label">Property</div>
+        <h2>SettlyWay</h2>
+        <p>Rooms and homes to rent, sorted by how far they really are from your office or campus. Each listing shows the travel time and monthly cost of getting there, and what's nearby: stations, groceries, clinics, food.</p>
+        <p>Landlords' exact addresses stay private until you message them on WhatsApp.</p>
+        <a href="https://settlyway.com" target="_blank" rel="noopener" class="p-link">settlyway.com →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KUYOKI -->
+<section id="kuyoki" class="sec" style="background:var(--sf)">
+  <div class="w">
+    <div class="p-row flip">
+      <div class="p-text rv">
+        <div class="sec-label">Social</div>
+        <h2>Kuyoki</h2>
+        <p>A map of what's on around you: cafés, events, deals and friends. Make plans together, chat, and get there in one tap.</p>
+        <p>Everyone has a Yoki, a little character you dress up your way. You're invisible on the map unless you choose otherwise. On the web now, coming to iPhone and Android.</p>
+        <a href="https://kuyoki.com" target="_blank" rel="noopener" class="p-link">kuyoki.com →</a>
+      </div>
+      <div class="event-vis rv d1">
+        <div class="ev-card">
+          <div class="ev-top">
+            <span class="ev-type">Event</span>
+            <span class="ev-time">Starts in 2h 15m</span>
+          </div>
+          <div class="ev-title">Rooftop Sunset Session</div>
+          <div class="ev-loc">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Lower East Side, NYC
+          </div>
+          <div class="ev-foot">
+            <span class="ev-going">34 going</span>
+            <div class="av-stack"><div class="av"></div><div class="av"></div><div class="av"></div></div>
+          </div>
+        </div>
+        <div class="ev-card">
+          <div class="ev-top">
+            <span class="ev-type">Food</span>
+            <span class="ev-time">Open now</span>
+          </div>
+          <div class="ev-title">Tsurutontan Udon</div>
+          <div class="ev-loc">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Shinjuku, Tokyo · 280m away
+          </div>
+        </div>
+        <div class="ev-card">
+          <div class="ev-top">
+            <span class="ev-type">Screening</span>
+            <span class="ev-time">Tomorrow 9pm</span>
+          </div>
+          <div class="ev-title">Champions League Final</div>
+          <div class="ev-loc">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Kreuzberg, Berlin
+          </div>
+          <div class="ev-foot">
+            <span class="ev-going">58 going</span>
+            <div class="av-stack"><div class="av"></div><div class="av"></div><div class="av"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KATALY -->
+<section id="kataly" class="sec">
+  <div class="w">
+    <div class="p-row flip-kataly">
+      <div class="mover-vis rv">
+        <div class="mover-header">
+          <div class="mover-title-group">
+            <h4>Live Movers</h4>
+            <span class="mover-sub">20+ exchanges</span>
+          </div>
+          <span class="mover-live">Scanned 15m</span>
+        </div>
+        <div class="mover-row">
+          <div class="mover-left">
+            <span class="mover-ticker">NVDA</span>
+            <span class="mover-reason">Announces $3B datacenter expansion</span>
+          </div>
+          <span class="mover-pct up">+4.2%</span>
+        </div>
+        <div class="mover-row">
+          <div class="mover-left">
+            <span class="mover-ticker">BABA</span>
+            <span class="mover-reason">Cloud revenue beats quarterly consensus by 12%</span>
+          </div>
+          <span class="mover-pct up">+3.8%</span>
+        </div>
+        <div class="mover-row">
+          <div class="mover-left">
+            <span class="mover-ticker">NIO</span>
+            <span class="mover-reason">EU tariff implementation delays expected by 6mo</span>
+          </div>
+          <span class="mover-pct dn">-5.1%</span>
+        </div>
+        <div class="mover-row">
+          <div class="mover-left">
+            <span class="mover-ticker">COIN</span>
+            <span class="mover-reason">Pauses staking services across four US states</span>
+          </div>
+          <span class="mover-pct dn">-3.4%</span>
+        </div>
+        <div class="mover-row">
+          <div class="mover-left">
+            <span class="mover-ticker">PLTR</span>
+            <span class="mover-reason">Secures $480M defense contract for AI suite</span>
+          </div>
+          <span class="mover-pct up">+6.7%</span>
+        </div>
+        
+        <div class="filing-header">Radar · SEC Filings Impact</div>
+        <div class="filing-row">
+          <span class="filing-badge">SEC 8-K</span>
+          <span class="filing-text">TSLA — $2.1B material acquisition filed</span>
+          <span class="filing-score">8.4/10</span>
+        </div>
+        <div class="filing-row">
+          <span class="filing-badge">SEC 4</span>
+          <span class="filing-text">AAPL — Insider selling 180K shares ($34M)</span>
+          <span class="filing-score">6.1/10</span>
+        </div>
+      </div>
+
+      <div class="p-text rv d1">
+        <div class="sec-label">Finance</div>
+        <h2>Kataly</h2>
+        <p>The day's biggest stock moves, each matched to the news behind it, and company filings ranked by how much they matter.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S NEXT -->
+<section id="kiba" class="next" style="background:var(--sf); padding: 96px 0;">
+  <div class="w">
+    <div class="rv" style="display:flex; flex-direction:column; align-items:center;">
+      <canvas id="core-canvas" width="240" height="240" style="margin-bottom: 20px;"></canvas>
+      <div class="sec-label">What's Next</div>
+      <h2>Project KIBA</h2>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="w">
+    <div class="foot">
+      <span class="foot-left">© 2026 KIBA Industries</span>
+      <a href="mailto:kibaindustries@gmail.com">kibaindustries@gmail.com</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal observer
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');obs.unobserve(x.target)}})},{threshold:.1,rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+// Mouse position & ambient orb
+const orb=document.getElementById('orb');
+let mx=innerWidth/2,my=innerHeight/2;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+!function t(){orb.style.left=mx+'px';orb.style.top=my+'px';requestAnimationFrame(t)}();
+
+// ==========================================
+// 1. INTERACTIVE 3D PARTICLE BACKDROP
+// ==========================================
+const bgCanvas = document.getElementById('bg-canvas');
+if (bgCanvas) {
+  const ctx = bgCanvas.getContext('2d');
+  let width, height;
+  let particles = [];
+  const numParticles = 65;
+
+  function resizeCanvas() {
+    width = bgCanvas.width = window.innerWidth;
+    height = bgCanvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.vx = (Math.random() - 0.5) * 0.35;
+      this.vy = (Math.random() - 0.5) * 0.35;
+      this.radius = Math.random() * 1.4 + 0.6;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+
+      const dx = mx - this.x;
+      const dy = my - this.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 130) {
+        this.x -= (dx / dist) * 0.7;
+        this.y -= (dy / dist) * 0.7;
+      }
+
+      if (this.x < 0 || this.x > width) this.vx *= -1;
+      if (this.y < 0 || this.y > height) this.vy *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(92, 225, 230, 0.3)';
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < numParticles; i++) particles.push(new Particle());
+
+  function animateBg() {
+    ctx.clearRect(0, 0, width, height);
+    for (let i = 0; i < particles.length; i++) {
+      particles[i].update();
+      particles[i].draw();
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 115) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(92, 225, 230, ${0.1 * (1 - dist / 115)})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animateBg);
+  }
+  animateBg();
+}
+
+// ==========================================
+// 2. GLOWING 3D NEURAL CORE (PROJECT KIBA)
+// ==========================================
+const coreCanvas = document.getElementById('core-canvas');
+if (coreCanvas) {
+  const cCtx = coreCanvas.getContext('2d');
+  const size = 240;
+  coreCanvas.width = size;
+  coreCanvas.height = size;
+
+  const t = (1.0 + Math.sqrt(5.0)) / 2.0;
+  let vertices = [
+    [-1,  t,  0], [ 1,  t,  0], [-1, -t,  0], [ 1, -t,  0],
+    [ 0, -1,  t], [ 0,  1,  t], [ 0, -1, -t], [ 0,  1, -t],
+    [ t,  0, -1], [ t,  0,  1], [-t,  0, -1], [-t,  0,  1]
+  ];
+
+  vertices = vertices.map(v => {
+    const d = Math.sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+    return [(v[0]/d)*68, (v[1]/d)*68, (v[2]/d)*68];
+  });
+
+  const edges = [
+    [0,11],[0,5],[0,1],[0,7],[0,10],[1,5],[1,7],[1,8],[1,9],
+    [2,11],[2,4],[2,6],[2,10],[3,4],[3,6],[3,8],[3,9],[4,5],
+    [4,9],[4,11],[5,9],[6,7],[6,8],[6,10],[7,8],[8,9],[10,11]
+  ];
+
+  let angX = 0;
+  let angY = 0;
+
+  function renderCore() {
+    cCtx.clearRect(0, 0, size, size);
+    angX += 0.007;
+    angY += 0.011;
+
+    const cosX = Math.cos(angX), sinX = Math.sin(angX);
+    const cosY = Math.cos(angY), sinY = Math.sin(angY);
+
+    const projected = vertices.map(v => {
+      let x1 = v[0] * cosY - v[2] * sinY;
+      let z1 = v[0] * sinY + v[2] * cosY;
+      let y2 = v[1] * cosX - z1 * sinX;
+      let z2 = v[1] * sinX + z1 * cosX;
+
+      const dist = 220;
+      const scale = dist / (dist + z2);
+      return {
+        x: x1 * scale + size / 2,
+        y: y2 * scale + size / 2,
+        z: z2
+      };
+    });
+
+    cCtx.strokeStyle = 'rgba(92, 225, 230, 0.4)';
+    cCtx.lineWidth = 1.1;
+    cCtx.shadowColor = '#5ce1e6';
+    cCtx.shadowBlur = 8;
+
+    edges.forEach(edge => {
+      const p1 = projected[edge[0]];
+      const p2 = projected[edge[1]];
+      cCtx.beginPath();
+      cCtx.moveTo(p1.x, p1.y);
+      cCtx.lineTo(p2.x, p2.y);
+      cCtx.stroke();
+    });
+
+    cCtx.fillStyle = '#5ce1e6';
+    projected.forEach(p => {
+      cCtx.beginPath();
+      cCtx.arc(p.x, p.y, 2.2, 0, Math.PI * 2);
+      cCtx.fill();
+    });
+    cCtx.shadowBlur = 0;
+
+    requestAnimationFrame(renderCore);
+  }
+  renderCore();
+}
+</script>
+
+</body>
+</html>
